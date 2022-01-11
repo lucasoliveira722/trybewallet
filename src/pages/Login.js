@@ -1,4 +1,7 @@
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { login } from '../actions';
 
 class Login extends Component {
   constructor() {
@@ -12,6 +15,7 @@ class Login extends Component {
 
     this.onInputChange = this.onInputChange.bind(this);
     this.enableEnterButton = this.enableEnterButton.bind(this);
+    this.onHandleClick = this.onHandleClick.bind(this);
   }
 
   // Disabled: cria um estado pro disabled (true ou false), e se o state do email passar no regex, e a senha tiver mais do q 6 (ou 8, não lembro) dígitos, aí deixa de ser false
@@ -23,6 +27,15 @@ class Login extends Component {
     this.setState({
       [name]: value,
     }, this.enableEnterButton);
+  }
+
+  onHandleClick() {
+    const { dispatch, history } = this.props;
+    const { email } = this.state;
+
+    dispatch(login(email));
+
+    history.push('/carteira');
   }
 
   // regex de validação de email tirado de https://www.w3resource.com/javascript/form/email-validation.php
@@ -77,7 +90,7 @@ class Login extends Component {
             data-testid="login-submit-button"
             type="button"
             disabled={ enterEnabled }
-            // onClick={ onHandleClick }
+            onClick={ this.onHandleClick }
           >
             Entrar
           </button>
@@ -87,4 +100,11 @@ class Login extends Component {
   }
 }
 
-export default Login;
+Login.propTypes = {
+  dispatch: PropTypes.func.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }).isRequired,
+};
+
+export default connect()(Login);
