@@ -81,7 +81,7 @@ class Login extends Component {
               data-testid="password-input"
               type="password"
               name="password"
-              minLength="8"
+              minLength="6"
               value={ password }
               onChange={ this.onInputChange }
             />

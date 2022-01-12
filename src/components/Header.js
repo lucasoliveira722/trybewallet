@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import './Header.css';
 
 export default class Header extends Component {
   constructor() {
@@ -14,7 +15,7 @@ export default class Header extends Component {
     const { email } = this.props;
     const { totalExpenses } = this.state;
     return (
-      <div>
+      <header>
         <h3 data-testid="total-field">
           { totalExpenses }
         </h3>
@@ -24,7 +25,7 @@ export default class Header extends Component {
         <h3 data-testid="header-currency-field">
           <p> BRL </p>
         </h3>
-      </div>
+      </header>
     );
   }
 }
