@@ -1,7 +1,7 @@
 header {
-  margin: 0;
-  border: 0;
-  padding: 10px;
   background-color: gray;
+  border: 0;
   height: 110px;
+  margin: 0;
+  padding: 10px;
 }
