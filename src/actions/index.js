@@ -1,8 +1,6 @@
-import fetchCoins from '../services/fetch';
-
 // Coloque aqui suas actions
 export const LOGIN = 'LOGIN';
-export const REQUEST_CURRENCIES_API_SUCCESS = 'REQUEST_CURRENCIES_API_SUCCESS';
+export const GET_CURRENCIES = 'GET_CURRENCIES';
 export const ADD_EXPENSES = 'ADD_EXPENSES';
 
 export const login = (email) => ({
@@ -15,14 +13,12 @@ export const addExpense = (expense) => ({
   expense,
 });
 
-export const requestCurrenciesSuccess = (currencies) => ({
-  type: REQUEST_CURRENCIES_API_SUCCESS,
-  payload: { currencies },
+// trecho de código tirado do pull request do Leonardo Henrique (https://github.com/tryber/sd-016-b-project-trybewallet/pull/27)
+export const saveCurrencies = (rates) => ({
+  type: GET_CURRENCIES,
+  rates,
 });
 
-export function requestThunkAPI() {
-  return (dispatch) => {
-    fetchCoins()
-      .then((payload) => dispatch(requestCurrenciesSuccess(payload)));
-  };
-}
+export const requestCurrencies = () => (dispatch) => fetch('https://economia.awesomeapi.com.br/json/all')
+  .then((response) => response.json())
+  .then((rates) => dispatch(saveCurrencies(rates)));

@@ -1,6 +1,7 @@
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import fetchCoins from '../services/fetch';
+import { requestCurrencies } from '../actions';
 
 class Form extends Component {
   constructor() {
@@ -9,8 +10,6 @@ class Form extends Component {
     this.state = {
       despesa: '',
       descricao: '',
-      // moeda: '',
-      // fullCoins: {},
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -18,7 +17,9 @@ class Form extends Component {
   }
 
   componentDidMount() {
-    console.log(fetchCoins());
+    const { dispatch } = this.props;
+    dispatch(requestCurrencies());
+    // this.setState
   }
 
   handleChange({ target }) {
@@ -35,6 +36,8 @@ class Form extends Component {
   }
 
   render() {
+    const { currencies } = this.props;
+    console.log(currencies);
     const {
       despesa,
       descricao,
@@ -68,8 +71,16 @@ class Form extends Component {
           <br />
           <label htmlFor="moeda">
             Selecione a moeda:
-            <select htmlFor="moeda" data-testid="currency-input">
-              {/* {fullCoins.map} */}
+            <select
+              htmlFor="moeda"
+              data-testid="currency-input"
+              onChange={ this.handleChange }
+            >
+              {currencies
+                .filter((e) => e !== 'USDT')
+                .map((e) => (
+                  <option key={ e } data-testid={ e }>{e}</option>
+                ))}
             </select>
           </label>
           <br />
@@ -105,4 +116,21 @@ class Form extends Component {
   }
 }
 
-export default connect()(Form);
+Form.propTypes = {
+  currencies: PropTypes.shape({
+    filter: PropTypes.func,
+    map: PropTypes.func,
+  }).isRequired,
+  dispatch: PropTypes.func.isRequired,
+};
+
+// const mapDispatchToProps = (dispatch) => ({
+//   requestCurrencies: dispatch(requestCurrencies()),
+// });
+
+const mapStateToProps = (state) => ({
+  currencies: state.wallet.currencies,
+  // console.log(state.wallet.currencies);
+});
+
+export default connect(mapStateToProps)(Form);
