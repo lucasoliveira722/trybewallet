@@ -4,6 +4,7 @@ export const GET_CURRENCIES = 'GET_CURRENCIES';
 export const ADD_EXPENSES = 'ADD_EXPENSES';
 export const SAVE_ALL = 'SAVE_ALL';
 export const SAVE_FORM = 'SAVE_FORM';
+export const DELETE_ITEM = 'DELETE_ITEM';
 
 export const login = (email) => ({
   type: LOGIN,
@@ -34,6 +35,7 @@ export const saveForm = (formData) => ({
   formData,
 });
 
+// código efetuado com MUITA ajuda do Israel Sant'Anna
 export function requestAll(formData) {
   return (dispatch) => {
     // dispatch(saveForm(formData));
@@ -48,3 +50,7 @@ export function requestAll(formData) {
 }
 // dispatch(saveAll(rates))
 // adicionar o valor do rates ao objeto formData antes de fazer o dispatch
+export const deleteItem = (payload) => ({
+  type: DELETE_ITEM,
+  payload,
+});
