@@ -1,10 +1,10 @@
-const url = 'https://economia.awesomeapi.com.br/json/all';
+const CURRENCY_API = 'https://economia.awesomeapi.com.br/json/all';
 
-export const fetchCoins = async () => {
-  const coins = await fetch(url)
-    .then((response) => response.json())
-    .then((data) => (data));
-  return coins;
+const getCurrencyApi = async () => {
+  const response = await fetch(CURRENCY_API);
+  const json = await response.json();
+
+  return response.ok ? Promise.resolve(json) : Promise.reject(json);
 };
 
-export default fetchCoins;
+export default getCurrencyApi;

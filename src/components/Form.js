@@ -1,15 +1,21 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { requestCurrencies } from '../actions';
+import { requestAll, requestCurrencies } from '../actions';
+// import getCurrencyApi from '../services/fetch';
 
 class Form extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.state = {
-      despesa: '',
-      descricao: '',
+      id: 0,
+      value: '',
+      description: '',
+      currency: '',
+      method: '',
+      tag: '',
+      // currencyArr: [],
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -19,7 +25,6 @@ class Form extends Component {
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch(requestCurrencies());
-    // this.setState
   }
 
   handleChange({ target }) {
@@ -27,75 +32,95 @@ class Form extends Component {
     this.setState({ [name]: value });
   }
 
-  handleClick() {
-    // const { despesa, descricao, moeda } = this.state;
-    // if (despesa !== '' && descricao !== '' && moeda !== '') {
-
-    // }
+  handleClick(e) {
+    const { id, value, description, currency, method, tag } = this.state;
+    e.preventDefault();
+    const { dispatch } = this.props;
+    dispatch(requestAll({ id, value, description, currency, method, tag }));
     console.log('Feito');
+    this.setState((prevState) => ({
+      id: prevState.id + 1,
+    }));
   }
 
   render() {
     const { currencies } = this.props;
-    console.log(currencies);
+    // console.log(currencies);
     const {
-      despesa,
-      descricao,
+      value,
+      description,
+      currency,
+      method,
+      tag,
     } = this.state;
 
     return (
       <div>
         Esse é o nosso formulário
         <form>
-          <label htmlFor="despesa">
+          <label htmlFor="value">
             Insira o valor da despesa
             <input
               data-testid="value-input"
-              type="despesa"
-              name="despesa"
-              value={ despesa }
+              type="value"
+              name="value"
+              value={ value }
               onChange={ this.handleChange }
             />
           </label>
           <br />
-          <label htmlFor="descricao">
+          <label htmlFor="description">
             Descrição da despesa
             <input
               data-testid="description-input"
-              type="descricao"
-              name="descricao"
-              value={ descricao }
+              type="description"
+              name="description"
+              value={ description }
               onChange={ this.handleChange }
             />
           </label>
           <br />
-          <label htmlFor="moeda">
+          <label htmlFor="currency">
             Selecione a moeda:
             <select
-              htmlFor="moeda"
+              name="currency"
+              id="currency"
+              value={ currency }
               data-testid="currency-input"
               onChange={ this.handleChange }
             >
-              {currencies
+              {currencies.length && currencies
                 .filter((e) => e !== 'USDT')
                 .map((e) => (
-                  <option key={ e } data-testid={ e }>{e}</option>
+                  <option key={ e }>{e}</option>
                 ))}
             </select>
           </label>
           <br />
-          <label htmlFor="metodo">
+          <label htmlFor="method">
             Selecione o método de pagamento:
-            <select htmlFor="metodo" data-testid="method-input">
+            <select
+              name="method"
+              id="method"
+              value={ method }
+              data-testid="method-input"
+              onChange={ this.handleChange }
+            >
               <option value="credito">Cartão de crédito</option>
               <option value="debito">Cartão de débito</option>
               <option value="dinheiro">Dinheiro</option>
             </select>
           </label>
           <br />
-          <label htmlFor="categoria">
+          <label htmlFor="tag">
             Selecione uma categoria:
-            <select htmlFor="categoria" data-testid="tag-input">
+            <select
+              name="tag"
+              id="tag"
+              value={ tag }
+              data-testid="tag-input"
+              onChange={ this.handleChange }
+            >
               <option value="alimentacao">Alimentação</option>
               <option value="lazer">Lazer</option>
               <option value="trabalho">Trabalho</option>
@@ -105,7 +130,7 @@ class Form extends Component {
           </label>
           <br />
           <button
-            type="button"
+            type="submit"
             onClick={ this.handleClick }
           >
             Adicionar despesa
@@ -119,6 +144,7 @@ class Form extends Component {
 Form.propTypes = {
   currencies: PropTypes.shape({
     filter: PropTypes.func,
+    length: PropTypes.func,
     map: PropTypes.func,
   }).isRequired,
   dispatch: PropTypes.func.isRequired,
