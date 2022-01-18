@@ -16,10 +16,10 @@ function walletReducer(state = INITIAL_STATE, action) {
     };
   }
   case SAVE_ALL: {
-    const expenses = action;
+    // const expenses = action;
     return {
       ...state,
-      exchangeRates: [expenses],
+      expenses: [...state.expenses, action.allInfo],
     };
   }
   case SAVE_FORM: {

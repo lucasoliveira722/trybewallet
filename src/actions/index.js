@@ -24,9 +24,9 @@ export const requestCurrencies = () => (dispatch) => fetch('https://economia.awe
   .then((response) => response.json())
   .then((rates) => dispatch(saveCurrencies(rates)));
 
-export const saveAll = (expenses) => ({
+export const saveAll = (allInfo) => ({
   type: SAVE_ALL,
-  expenses,
+  allInfo,
 });
 
 export const saveForm = (formData) => ({
@@ -36,9 +36,15 @@ export const saveForm = (formData) => ({
 
 export function requestAll(formData) {
   return (dispatch) => {
-    dispatch(saveForm(formData));
+    // dispatch(saveForm(formData));
+    // const allInfo = {...formData, rates};
     fetch('https://economia.awesomeapi.com.br/json/all')
       .then((response) => response.json())
-      .then((rates) => dispatch(saveAll(rates)));
+      .then((exchangeRates) => {
+        const allInfo = { ...formData, exchangeRates };
+        dispatch(saveAll(allInfo));
+      });
   };
 }
+// dispatch(saveAll(rates))
+// adicionar o valor do rates ao objeto formData antes de fazer o dispatch

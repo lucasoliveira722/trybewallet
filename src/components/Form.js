@@ -12,10 +12,9 @@ class Form extends Component {
       id: 0,
       value: '',
       description: '',
-      currency: '',
-      method: '',
-      tag: '',
-      // currencyArr: [],
+      currency: 'USD',
+      method: 'credito',
+      tag: 'alimentacao',
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -37,11 +36,18 @@ class Form extends Component {
     e.preventDefault();
     const { dispatch } = this.props;
     dispatch(requestAll({ id, value, description, currency, method, tag }));
-    console.log('Feito');
+    // console.log('Feito');
     this.setState((prevState) => ({
       id: prevState.id + 1,
+      value: '',
+      description: '',
+      currency: 'USD',
+      method: 'credito',
+      tag: 'alimentacao',
     }));
   }
+
+  // pegar o valor que está na chave expense, multiplicar pelo valor que está no exchangeRates da currency selecionada e adicionar no header
 
   render() {
     const { currencies } = this.props;
@@ -62,7 +68,8 @@ class Form extends Component {
             Insira o valor da despesa
             <input
               data-testid="value-input"
-              type="value"
+              id="value"
+              type="text"
               name="value"
               value={ value }
               onChange={ this.handleChange }
@@ -73,7 +80,8 @@ class Form extends Component {
             Descrição da despesa
             <input
               data-testid="description-input"
-              type="description"
+              id="description"
+              type="text"
               name="description"
               value={ description }
               onChange={ this.handleChange }
@@ -106,9 +114,9 @@ class Form extends Component {
               data-testid="method-input"
               onChange={ this.handleChange }
             >
-              <option value="credito">Cartão de crédito</option>
-              <option value="debito">Cartão de débito</option>
-              <option value="dinheiro">Dinheiro</option>
+              <option value="Cartão de crédito">Cartão de crédito</option>
+              <option value="Cartão de débito">Cartão de débito</option>
+              <option value="Dinheiro">Dinheiro</option>
             </select>
           </label>
           <br />
@@ -121,11 +129,11 @@ class Form extends Component {
               data-testid="tag-input"
               onChange={ this.handleChange }
             >
-              <option value="alimentacao">Alimentação</option>
-              <option value="lazer">Lazer</option>
-              <option value="trabalho">Trabalho</option>
-              <option value="transporte">Transporte</option>
-              <option value="saude">Saúde</option>
+              <option value="Alimentação">Alimentação</option>
+              <option value="Lazer">Lazer</option>
+              <option value="Trabalho">Trabalho</option>
+              <option value="Transporte">Transporte</option>
+              <option value="Saúde">Saúde</option>
             </select>
           </label>
           <br />
