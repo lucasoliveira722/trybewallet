@@ -6,13 +6,13 @@ import { deleteItem } from '../actions';
 // código feito com ajuda e baseado no código do Jonatas Passos
 class Table extends Component {
   handleClick = (event) => {
-    const { tableData } = this.props;
-    const newArr = tableData.filter((e) => Number(e.id) !== Number(event.target.value));
+    const { expenses } = this.props;
+    const newArr = expenses.filter((e) => Number(e.id) !== Number(event.target.value));
     return newArr;
   }
 
   render() {
-    const { tableData, deleteItemWallet } = this.props;
+    const { expenses, deleteItemWallet } = this.props;
 
     return (
       <table>
@@ -27,7 +27,7 @@ class Table extends Component {
           <th>Moeda de conversão</th>
           <th>Editar/Excluir</th>
         </tr>
-        { tableData.map((e) => (
+        { expenses.map((e) => (
           <tr key={ e.id }>
             <td>{e.description}</td>
             <td>{e.tag}</td>
@@ -57,7 +57,7 @@ class Table extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  tableData: state.wallet.expenses,
+  expenses: state.wallet.expenses,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -65,7 +65,7 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 Table.propTypes = {
-  tableData: PropTypes.arrayOf(PropTypes.object).isRequired,
+  expenses: PropTypes.arrayOf(PropTypes.object).isRequired,
   deleteItemWallet: PropTypes.func.isRequired,
 };
 
